@@ -1,0 +1,63 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/1.0.0/server.json",
+  "name": "diaspora-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Kenyans abroad \u2014 dual citizenship guide, diaspora taxes, homeland investment, document verification, community directory, and immigration status tools. 6 tools.",
+  "license": "MIT",
+  "homepage": "https://gabrielmahia.github.io",
+  "author": {
+    "name": "Gabriel Mahia",
+    "email": "contact@aikungfu.dev",
+    "url": "https://gabrielmahia.github.io"
+  },
+  "keywords": [
+    "diaspora",
+    "kenya",
+    "remittance",
+    "citizenship",
+    "investment",
+    "immigration",
+    "mcp",
+    "africa"
+  ],
+  "categories": [
+    "Legal & Compliance",
+    "Finance",
+    "Government Data"
+  ],
+  "tools": [
+    {
+      "name": "dual_citizenship_guide",
+      "description": "Dual citizenship guide"
+    },
+    {
+      "name": "diaspora_tax_guide",
+      "description": "Diaspora tax guide"
+    },
+    {
+      "name": "homeland_investment",
+      "description": "Homeland investment resources"
+    },
+    {
+      "name": "document_verification",
+      "description": "Document verification"
+    },
+    {
+      "name": "community_directory",
+      "description": "Community directory"
+    },
+    {
+      "name": "immigration_status",
+      "description": "Immigration status guide"
+    }
+  ],
+  "installation": {
+    "type": "pip",
+    "package": "diaspora-mcp",
+    "command": "pip install diaspora-mcp"
+  },
+  "links": {
+    "github": "https://github.com/gabrielmahia/diaspora-mcp",
+    "pypi": "https://pypi.org/project/diaspora-mcp"
+  }
+}
