@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "diaspora-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community. 6 tools."
 readme = "README.md"
 license = { text = "MIT" }
