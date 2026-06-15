@@ -10,7 +10,7 @@ from fastmcp import FastMCP
 
 mcp = FastMCP(
     name="diaspora-mcp",
-    description="Kenya diaspora services via MCP — immigration guidance, dual citizenship, diaspora taxes, homeland investment, community verification. DEMO."
+    instructions="Kenya diaspora services via MCP — immigration guidance, dual citizenship, diaspora taxes, homeland investment, community verification. DEMO."
 )
 
 @mcp.tool(name="dual_citizenship_guide",
