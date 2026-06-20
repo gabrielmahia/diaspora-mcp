@@ -1,6 +1,7 @@
 # diaspora-mcp
 
 [![diaspora-mcp Glama score](https://glama.ai/mcp/servers/gabrielmahia/diaspora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/gabrielmahia/diaspora-mcp)
+[![smithery badge](https://smithery.ai/badge/@gabrielmahia/diaspora-mcp)](https://smithery.ai/server/@gabrielmahia/diaspora-mcp)
 
 
 > Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community resources.
