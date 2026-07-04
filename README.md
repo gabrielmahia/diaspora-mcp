@@ -1,4 +1,5 @@
 # diaspora-mcp
+<!-- mcp-name: io.github.gabrielmahia/diaspora-mcp -->
 
 [![diaspora-mcp Glama score](https://glama.ai/mcp/servers/gabrielmahia/diaspora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/gabrielmahia/diaspora-mcp)
 [![smithery badge](https://smithery.ai/badge/@gabrielmahia/diaspora-mcp)](https://smithery.ai/server/@gabrielmahia/diaspora-mcp)

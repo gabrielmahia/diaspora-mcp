@@ -173,3 +173,7 @@ def immigration_status_guide(country: Optional[str] = "USA", status: Optional[st
     return {"source": "DEMO — USCIS, UKVI, IRCC", "country": country, "all_statuses": guide,
             "legal_aid": "Find a licensed immigration attorney via your country's bar association.",
             "disclaimer": "Not immigration legal advice. Situations vary. Always consult a licensed attorney."}
+
+def main() -> None:
+    """Console entry point."""
+    mcp.run()
