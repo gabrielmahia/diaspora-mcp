@@ -1,22 +1,8 @@
 # diaspora-mcp
-<!-- mcp-name: io.github.gabrielmahia/diaspora-mcp -->
 
-[![diaspora-mcp Glama score](https://glama.ai/mcp/servers/gabrielmahia/diaspora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/gabrielmahia/diaspora-mcp)
-[![smithery badge](https://smithery.ai/badge/@gabrielmahia/diaspora-mcp)](https://smithery.ai/server/@gabrielmahia/diaspora-mcp)
+## Why This Exists
 
-
----
-**Compatible with `claude-sonnet-5`** (released 2026-06-30) — Anthropic's most agentic
-Sonnet yet. Runs multi-step tool chains end-to-end without stopping short.
-Install: `pip install diaspora-mcp` · Use with any MCP client.
-
----
-
-
-> Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community resources.
-
-[![PyPI](https://img.shields.io/badge/PyPI-v0.1.0-blue?logo=pypi)](https://pypi.org/project/diaspora-mcp/)
-[![License](https://img.shields.io/badge/License-MIT-green)](https://github.com/gabrielmahia/diaspora-mcp)
+Kenyans abroad navigate dual citizenship, diaspora taxation, property purchase and document verification across two legal systems at once, usually with advice that is out of date or second-hand. The cost of getting it wrong is measured in years, not shillings.
 
 ## Install
 
@@ -24,34 +10,52 @@ Install: `pip install diaspora-mcp` · Use with any MCP client.
 pip install diaspora-mcp
 ```
 
-## What This Covers
+## Tools (6)
 
-This is distinct from `remit-mcp` (which covers remittance corridors and transfer rates). diaspora-mcp covers the full lifecycle of being Kenyan abroad:
+- **`dual_citizenship_guide`** —   
+  <sub>args: current_citizenship</sub>
+- **`diaspora_tax_guide`** —   
+  <sub>args: residence_country</sub>
+- **`kenya_homeland_investment`** —   
+  <sub>args: budget_usd</sub>
+- **`diaspora_verification`** —   
+  <sub>args: document_type</sub>
+- **`diaspora_community_guide`** —   
+  <sub>args: country</sub>
+- **`immigration_status_guide`** —   
+  <sub>args: country, status</sub>
 
-| Tool | Function |
-|------|----------|
-| `dual_citizenship_guide` | Kenya dual citizenship — eligibility, process, rights retained |
-| `diaspora_tax_guide` | Tax obligations in USA/UK/CA + Kenya cross-border tax guidance |
-| `kenya_homeland_investment` | Investment options for diaspora: M-Akiba, NSE, REITs, unit trusts |
-| `diaspora_verification` | Document authentication — apostille, foreign certificates for Kenya use |
-| `diaspora_community_guide` | Kenya diaspora organisations by country |
-| `immigration_status_guide` | Immigration status guidance: H-1B, green card, ILR, citizenship paths |
+## Example
 
-## Context
+```python
+from diaspora_mcp.server import dual_citizenship_guide
 
-Kenya diaspora remitted **$4.1B** in 2024. The infrastructure for diaspora Kenyans to navigate immigration, taxes, and homeland investment has historically required expensive lawyers or simply didn't exist.
+result = dual_citizenship_guide()
+# eligibility, process, documents, common pitfalls
+```
 
-→ [The Nairobi Stack](https://gabrielmahia.github.io/nairobi-stack)
+## Claude Desktop Integration
 
-## Related MCPs
+Add to `claude_desktop_config.json`:
 
-- `remit-mcp` — remittance corridor rates and transfer
-- `faida-mcp` — Kenya capital markets and investment detail
-- `familia-mcp` — inheritance, wills, diaspora property
+```json
+{
+  "mcpServers": {
+    "diaspora-mcp": {
+      "command": "python",
+      "args": ["-m", "diaspora_mcp.server"]
+    }
+  }
+}
+```
 
-## License
+## Data & Disclaimers
 
-MIT © Gabriel Mahia | contact@aikungfu.dev
+Immigration, tax and property rules change and interact with the law of your country of residence. This is orientation, not legal or tax advice — confirm with an advocate and a qualified tax adviser.
+
+Every tool response carries a `source` field. Responses labelled `DEMO` are
+illustrative reference data, not a live feed — verify against the authority
+named in the response before acting on it.
 
 ## Part of the East Africa Coordination Stack
 
