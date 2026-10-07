@@ -1,8 +1,8 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/1.0.0/server.json",
   "name": "diaspora-mcp",
-  "version": "0.1.0",
-  "description": "MCP server for Kenyans abroad \u2014 dual citizenship guide, diaspora taxes, homeland investment, document verification, community directory, and immigration status tools. 6 tools.",
+  "version": "0.1.3",
+  "description": "Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community",
   "license": "MIT",
   "homepage": "https://gabrielmahia.github.io",
   "author": {
@@ -37,27 +37,27 @@
   "tools": [
     {
       "name": "dual_citizenship_guide",
-      "description": "Dual citizenship guide"
+      "description": "Kenya dual citizenship guidance — eligibility, process, rights. DEMO."
     },
     {
       "name": "diaspora_tax_guide",
-      "description": "Diaspora tax guide"
+      "description": "Tax obligations for Kenya diaspora — Kenya and US/UK/CA dual tax considerations. DEMO."
     },
     {
-      "name": "homeland_investment",
-      "description": "Homeland investment resources"
+      "name": "kenya_homeland_investment",
+      "description": "Investment options for Kenya diaspora investing back home. DEMO."
     },
     {
-      "name": "document_verification",
-      "description": "Document verification"
+      "name": "diaspora_verification",
+      "description": "Services for diaspora identity verification and document authentication for Kenya use. DEMO."
     },
     {
-      "name": "community_directory",
-      "description": "Community directory"
+      "name": "diaspora_community_guide",
+      "description": "Kenya diaspora community resources and organisations by country. DEMO."
     },
     {
-      "name": "immigration_status",
-      "description": "Immigration status guide"
+      "name": "immigration_status_guide",
+      "description": "Common immigration questions for Kenyans in USA, UK, or Canada. DEMO."
     }
   ],
   "installation": {
@@ -68,5 +68,8 @@
   "links": {
     "github": "https://github.com/gabrielmahia/diaspora-mcp",
     "pypi": "https://pypi.org/project/diaspora-mcp"
-  }
+  },
+  "maintainers": [
+    "gabrielmahia"
+  ]
 }
