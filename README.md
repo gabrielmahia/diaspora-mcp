@@ -1,4 +1,5 @@
 # diaspora-mcp
+<!-- mcp-name: io.github.gabrielmahia/diaspora-mcp -->
 
 ## Why This Exists
 
