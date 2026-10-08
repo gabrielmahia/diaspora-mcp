@@ -5,8 +5,13 @@ This covers the full lifecycle: immigration status, dual citizenship,
 diaspora taxes, Kenya homeland investment, community verification.
 """
 from __future__ import annotations
+
 from typing import Optional
+
 from fastmcp import FastMCP
+
+# Annotations tell clients which tools are safe to auto-approve (read-only, no side effects).
+READ_ONLY = {"readOnlyHint": True, "idempotentHint": True, "openWorldHint": False}
 
 mcp = FastMCP(
     name="diaspora-mcp",
@@ -14,8 +19,8 @@ mcp = FastMCP(
 )
 
 @mcp.tool(name="dual_citizenship_guide",
-          description="Kenya dual citizenship guidance — eligibility, process, rights. DEMO.")
-def dual_citizenship_guide(current_citizenship: Optional[str] = "USA") -> dict:
+          description="Kenya dual citizenship guidance — eligibility, process, rights. DEMO.", annotations=READ_ONLY)
+def dual_citizenship_guide(current_citizenship: str | None = "USA") -> dict:
     return {"source": "DEMO — Kenya Citizenship and Immigration Act 2011",
             "current_citizenship": current_citizenship,
             "kenya_dual_citizenship": {
@@ -32,8 +37,8 @@ def dual_citizenship_guide(current_citizenship: Optional[str] = "USA") -> dict:
                              "embassy_uk": "Kenya High Commission, London: kenyahighcom.org.uk"}}
 
 @mcp.tool(name="diaspora_tax_guide",
-          description="Tax obligations for Kenya diaspora — Kenya and US/UK/CA dual tax considerations. DEMO.")
-def diaspora_tax_guide(residence_country: Optional[str] = "USA") -> dict:
+          description="Tax obligations for Kenya diaspora — Kenya and US/UK/CA dual tax considerations. DEMO.", annotations=READ_ONLY)
+def diaspora_tax_guide(residence_country: str | None = "USA") -> dict:
     COUNTRIES = {
         "USA": {
             "kenya_tax": "Non-residents with Kenya income pay 30% non-resident tax. No Kenya tax on foreign-earned income.",
@@ -62,8 +67,8 @@ def diaspora_tax_guide(residence_country: Optional[str] = "USA") -> dict:
             "disclaimer": "Not tax advice. Consult a licensed tax professional in both Kenya and your country of residence."}
 
 @mcp.tool(name="kenya_homeland_investment",
-          description="Investment options for Kenya diaspora investing back home. DEMO.")
-def kenya_homeland_investment(budget_usd: Optional[float] = 10000.0) -> dict:
+          description="Investment options for Kenya diaspora investing back home. DEMO.", annotations=READ_ONLY)
+def kenya_homeland_investment(budget_usd: float | None = 10000.0) -> dict:
     return {"source": "DEMO — NSE, CBK, Kenya Investment Authority", "budget_usd": budget_usd,
             "investment_options": [
                 {"name": "M-Akiba Treasury Bonds", "min_usd": 500,
@@ -90,8 +95,8 @@ def kenya_homeland_investment(budget_usd: Optional[float] = 10000.0) -> dict:
             "faida_mcp": "pip install faida-mcp for full capital markets guide"}
 
 @mcp.tool(name="diaspora_verification",
-          description="Services for diaspora identity verification and document authentication for Kenya use. DEMO.")
-def diaspora_verification(document_type: Optional[str] = None) -> dict:
+          description="Services for diaspora identity verification and document authentication for Kenya use. DEMO.", annotations=READ_ONLY)
+def diaspora_verification(document_type: str | None = None) -> dict:
     DOCS = {
         "birth_certificate": {
             "apostille": "Apostille not required for Kenya. Submit to Kenyan embassy with sworn translation if not in English.",
@@ -122,8 +127,8 @@ def diaspora_verification(document_type: Optional[str] = None) -> dict:
             "kenya_embassy": "Find your nearest Kenya embassy: mfa.go.ke/missions-abroad"}
 
 @mcp.tool(name="diaspora_community_guide",
-          description="Kenya diaspora community resources and organisations by country. DEMO.")
-def diaspora_community_guide(country: Optional[str] = "USA") -> dict:
+          description="Kenya diaspora community resources and organisations by country. DEMO.", annotations=READ_ONLY)
+def diaspora_community_guide(country: str | None = "USA") -> dict:
     COMMUNITIES = {
         "USA": [
             {"name": "Kenya USA Diaspora Council (KUDC)", "focus": "Advocacy, investment facilitation, cultural preservation"},
@@ -148,8 +153,8 @@ def diaspora_community_guide(country: Optional[str] = "USA") -> dict:
             "remittance": "Kenyans abroad sent $4.1B home in 2024. See remit-mcp for corridor rates."}
 
 @mcp.tool(name="immigration_status_guide",
-          description="Common immigration questions for Kenyans in USA, UK, or Canada. DEMO.")
-def immigration_status_guide(country: Optional[str] = "USA", status: Optional[str] = None) -> dict:
+          description="Common immigration questions for Kenyans in USA, UK, or Canada. DEMO.", annotations=READ_ONLY)
+def immigration_status_guide(country: str | None = "USA", status: str | None = None) -> dict:
     USA_GUIDE = {
         "green_card_holder": "Permanent resident. Can sponsor spouse and unmarried children. 5 years (3 if married to US citizen) to naturalise. Travel >6 months may affect residency.",
         "h1b": "Employer-sponsored work visa. Subject to annual cap. Can apply for green card while on H-1B. Valid for 3+3 years.",
