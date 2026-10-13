@@ -6,9 +6,10 @@ diaspora taxes, Kenya homeland investment, community verification.
 """
 from __future__ import annotations
 
-from typing import Optional
+from typing import Annotated, Optional
 
 from fastmcp import FastMCP
+from pydantic import Field
 
 # Annotations tell clients which tools are safe to auto-approve (read-only, no side effects).
 READ_ONLY = {"readOnlyHint": True, "idempotentHint": True, "openWorldHint": False}
@@ -19,8 +20,8 @@ mcp = FastMCP(
 )
 
 @mcp.tool(name="dual_citizenship_guide",
-          description="Kenya dual citizenship guidance — eligibility, process, rights. DEMO.", annotations=READ_ONLY)
-def dual_citizenship_guide(current_citizenship: str | None = "USA") -> dict:
+          description="Explain Kenyan dual citizenship for someone abroad: eligibility, how to keep or regain Kenyan citizenship, the Kenyan passport, diaspora registration and voting from abroad, with embassy contacts. Use when a Kenyan abroad asks whether they can hold two nationalities. current_citizenship is echoed back; the guidance is general. Returns the source label, current_citizenship, the dual-citizenship rules, passport and registration steps and embassy contacts. A static summary of the Citizenship and Immigration Act 2011 labelled DEMO and not legal advice: verify fees and forms with the embassy or the Department of Immigration. Read-only; no side effects.", annotations=READ_ONLY)
+def dual_citizenship_guide(current_citizenship: Annotated[str | None, Field(description="Your current citizenship, such as USA; only echoed back (default USA).")] = "USA") -> dict:
     return {"source": "DEMO — Kenya Citizenship and Immigration Act 2011",
             "current_citizenship": current_citizenship,
             "kenya_dual_citizenship": {
@@ -37,8 +38,8 @@ def dual_citizenship_guide(current_citizenship: str | None = "USA") -> dict:
                              "embassy_uk": "Kenya High Commission, London: kenyahighcom.org.uk"}}
 
 @mcp.tool(name="diaspora_tax_guide",
-          description="Tax obligations for Kenya diaspora — Kenya and US/UK/CA dual tax considerations. DEMO.", annotations=READ_ONLY)
-def diaspora_tax_guide(residence_country: str | None = "USA") -> dict:
+          description="Summarise the tax position of a Kenyan living abroad in a country in the table (such as the USA, UK or Canada): Kenyan tax on Kenya income, the residence country's rules and double-taxation points. Use when someone asks what tax they owe at home or abroad. residence_country is matched case-insensitively; an unrecognised country returns an error listing the supported ones. Returns the source label, the country, the tax guidance, a key principle, the KRA portal and a disclaimer. Static summary labelled DEMO and NOT tax advice: consult a cross-border tax accountant. Read-only; no side effects.", annotations=READ_ONLY)
+def diaspora_tax_guide(residence_country: Annotated[str | None, Field(description="Country of residence such as USA, UK or Canada (default USA); others return an error.")] = "USA") -> dict:
     COUNTRIES = {
         "USA": {
             "kenya_tax": "Non-residents with Kenya income pay 30% non-resident tax. No Kenya tax on foreign-earned income.",
@@ -59,7 +60,9 @@ def diaspora_tax_guide(residence_country: str | None = "USA") -> dict:
             "tfsa": "TFSA contributions not affected by foreign income. RRSP contributions based on Canadian earned income only.",
         },
     }
-    country_data = COUNTRIES.get(residence_country.upper(), COUNTRIES["USA"])
+    if residence_country.upper() not in COUNTRIES:
+        return {"error": f"No tax guidance for {residence_country!r}.", "supported_countries": list(COUNTRIES)}
+    country_data = COUNTRIES[residence_country.upper()]
     return {"source": "DEMO — KRA, IRS, HMRC, CRA", "residence_country": residence_country,
             "tax_guidance": country_data,
             "key_principle": "Most diaspora Kenyans face obligations in BOTH countries. Get advice from a cross-border tax accountant.",
@@ -67,8 +70,8 @@ def diaspora_tax_guide(residence_country: str | None = "USA") -> dict:
             "disclaimer": "Not tax advice. Consult a licensed tax professional in both Kenya and your country of residence."}
 
 @mcp.tool(name="kenya_homeland_investment",
-          description="Investment options for Kenya diaspora investing back home. DEMO.", annotations=READ_ONLY)
-def kenya_homeland_investment(budget_usd: float | None = 10000.0) -> dict:
+          description="Investment options at home for a budget in US dollars: M-Akiba bonds, money market funds, NSE shares and a REIT, with minimums, indicative returns and risk. Use when a diaspora investor asks where to put a given amount. Every option is returned; budget_usd only changes the closing recommendation text. Returns the source label, budget_usd, the options, a platform recommendation and a pointer to faida-mcp. Indicative returns labelled DEMO and not investment advice. Read-only; no side effects.", annotations=READ_ONLY)
+def kenya_homeland_investment(budget_usd: Annotated[float | None, Field(description="Amount in US dollars to invest (default 10000); changes only the recommendation text.")] = 10000.0) -> dict:
     return {"source": "DEMO — NSE, CBK, Kenya Investment Authority", "budget_usd": budget_usd,
             "investment_options": [
                 {"name": "M-Akiba Treasury Bonds", "min_usd": 500,
@@ -95,8 +98,8 @@ def kenya_homeland_investment(budget_usd: float | None = 10000.0) -> dict:
             "faida_mcp": "pip install faida-mcp for full capital markets guide"}
 
 @mcp.tool(name="diaspora_verification",
-          description="Services for diaspora identity verification and document authentication for Kenya use. DEMO.", annotations=READ_ONLY)
-def diaspora_verification(document_type: str | None = None) -> dict:
+          description="Guidance on authenticating documents for use in Kenya from abroad (birth certificate, marriage certificate, academic and other documents): who certifies them and the apostille route, since Kenya is party to the Hague Apostille Convention. Use when someone needs a foreign or Kenyan document accepted. document_type selects an entry; if none match, a general instruction to contact the nearest Kenyan embassy is returned; with no argument all documents are listed. Returns the source label, the guidance, the apostille note and the embassy finder. Labelled DEMO: confirm requirements with the receiving authority. Read-only; no side effects.", annotations=READ_ONLY)
+def diaspora_verification(document_type: Annotated[str | None, Field(description="Optional document such as birth_certificate; omit to list all.")] = None) -> dict:
     DOCS = {
         "birth_certificate": {
             "apostille": "Apostille not required for Kenya. Submit to Kenyan embassy with sworn translation if not in English.",
@@ -127,8 +130,8 @@ def diaspora_verification(document_type: str | None = None) -> dict:
             "kenya_embassy": "Find your nearest Kenya embassy: mfa.go.ke/missions-abroad"}
 
 @mcp.tool(name="diaspora_community_guide",
-          description="Kenya diaspora community resources and organisations by country. DEMO.", annotations=READ_ONLY)
-def diaspora_community_guide(country: str | None = "USA") -> dict:
+          description="Kenyan diaspora organisations by country, with their focus, plus investment facilitation, voter registration and remittance pointers. Use when someone abroad wants to find community or professional groups. country is matched case-insensitively; an unrecognised country returns an error listing the supported countries. Returns the source label, the country, the organisations, the Kenya Investment Authority contact, voter registration and a remittance note citing the Central Bank of Kenya's USD 4.94 billion for 2024. A short sample directory labelled DEMO: verify each organisation. Read-only; no side effects.", annotations=READ_ONLY)
+def diaspora_community_guide(country: Annotated[str | None, Field(description="Country such as USA or UK (default USA); others return an error.")] = "USA") -> dict:
     COMMUNITIES = {
         "USA": [
             {"name": "Kenya USA Diaspora Council (KUDC)", "focus": "Advocacy, investment facilitation, cultural preservation"},
@@ -145,16 +148,18 @@ def diaspora_community_guide(country: str | None = "USA") -> dict:
             {"name": "Kenya High Commission Ottawa", "focus": "Consular services"},
         ],
     }
-    orgs = COMMUNITIES.get(country.upper(), COMMUNITIES["USA"])
+    if country.upper() not in COMMUNITIES:
+        return {"error": f"No directory for {country!r}.", "supported_countries": list(COMMUNITIES)}
+    orgs = COMMUNITIES[country.upper()]
     return {"source": "DEMO — Kenya diaspora community directory", "country": country,
             "organisations": orgs,
             "investment_facilitation": "Kenya Investment Authority: invest.go.ke | diaspora@kenyainvest.go.ke",
             "voter_registration": "Register to vote at Kenyan embassy. IEBC: iebc.or.ke",
-            "remittance": "Kenyans abroad sent $4.1B home in 2024. See remit-mcp for corridor rates."}
+            "remittance": "Kenyans abroad sent USD 4.94 billion home in 2024 (Central Bank of Kenya). See remit-mcp for corridor rates."}
 
 @mcp.tool(name="immigration_status_guide",
-          description="Common immigration questions for Kenyans in USA, UK, or Canada. DEMO.", annotations=READ_ONLY)
-def immigration_status_guide(country: str | None = "USA", status: str | None = None) -> dict:
+          description="General notes on immigration statuses in the USA, UK and Canada (for example green card holder or student) and what each allows. Use when a Kenyan abroad asks what a status permits or where to get legal help. country selects the guide; status matches an entry by text and, if none match, a general consult-an-attorney note is returned; with no status all statuses are listed. Returns the source label, the country, the guidance and a disclaimer. Static summary labelled DEMO and NOT immigration legal advice: rules change, so consult a licensed immigration attorney. Read-only; no side effects.", annotations=READ_ONLY)
+def immigration_status_guide(country: Annotated[str | None, Field(description="USA, UK or Canada (default USA).")] = "USA", status: Annotated[str | None, Field(description="Optional status such as green_card_holder; omit to list all.")] = None) -> dict:
     USA_GUIDE = {
         "green_card_holder": "Permanent resident. Can sponsor spouse and unmarried children. 5 years (3 if married to US citizen) to naturalise. Travel >6 months may affect residency.",
         "h1b": "Employer-sponsored work visa. Subject to annual cap. Can apply for green card while on H-1B. Valid for 3+3 years.",
