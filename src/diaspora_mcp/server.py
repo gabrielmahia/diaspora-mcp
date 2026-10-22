@@ -6,6 +6,8 @@ diaspora taxes, Kenya homeland investment, community verification.
 """
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _pkg_version
 from typing import Annotated, Optional
 
 from fastmcp import FastMCP
@@ -14,9 +16,15 @@ from pydantic import Field
 # Annotations tell clients which tools are safe to auto-approve (read-only, no side effects).
 READ_ONLY = {"readOnlyHint": True, "idempotentHint": True, "openWorldHint": False}
 
+try:
+    _VERSION = _pkg_version("diaspora-mcp")
+except PackageNotFoundError:  # a source tree that was never installed
+    _VERSION = "0+unknown"
+
+
 mcp = FastMCP(
     name="diaspora-mcp",
-    instructions="Kenya diaspora services via MCP — immigration guidance, dual citizenship, diaspora taxes, homeland investment, community verification. DEMO."
+    instructions="Kenya diaspora services via MCP — immigration guidance, dual citizenship, diaspora taxes, homeland investment, community verification. DEMO.", version=_VERSION
 )
 
 @mcp.tool(name="dual_citizenship_guide",
