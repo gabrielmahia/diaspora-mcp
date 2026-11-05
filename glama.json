@@ -1,7 +1,7 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/1.0.0/server.json",
   "name": "diaspora-mcp",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community",
   "license": "MIT",
   "homepage": "https://gabrielmahia.github.io",
@@ -58,6 +58,16 @@
     {
       "name": "immigration_status_guide",
       "description": "General notes on immigration statuses in the USA, UK and Canada (for example green card holder or student) and what each allows. Use when a Kenyan abroad asks what a status permits or where to get legal help. country selects the guide; status matches an entry by text and, if none match, a general consult-an-attorney note is returned; with no status all statuses are listed. Returns the source label, the country, the guidance and a disclaimer. Static summary labelled DEMO and NOT immigration legal advice: rules change, so consult a licensed immigration attorney. Read-only; no side effects."
+    },
+    {
+      "name": "live_exchange_rate",
+      "description": "Get today's exchange rate from a currency (for example USD, GBP, EUR, CAD or AED) to Kenyan shillings, from a free live rates service, and optionally convert an amount. Use when someone abroad wants to know what their money is worth in Kenya today, or to sanity-check a quoted rate before sending money or paying for property or fees. Returns the rate, the converted amount if given, when the rates were last updated, the source and its required attribution; on a network or service failure it returns an error instead of a rate. Read-only; contacts an external service.",
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
     }
   ],
   "installation": {

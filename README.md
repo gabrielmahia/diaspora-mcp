@@ -11,7 +11,7 @@ Kenyans abroad navigate dual citizenship, diaspora taxation, property purchase a
 pip install diaspora-mcp
 ```
 
-## Tools (6)
+## Tools (7)
 
 - **`dual_citizenship_guide`** —   
   <sub>args: current_citizenship</sub>
@@ -57,6 +57,12 @@ Immigration, tax and property rules change and interact with the law of your cou
 Every tool response carries a `source` field. Responses labelled `DEMO` are
 illustrative reference data, not a live feed — verify against the authority
 named in the response before acting on it.
+
+## Live data
+
+- `live_exchange_rate`: today's reference rate to KES (and an optional conversion), from the ExchangeRate-API open endpoint (attribution: Rates By Exchange Rate API).
+
+Each live answer names its source, attribution and retrieval time; if a service does not answer, the tool returns an error instead of a number. The other tools are unchanged.
 
 ## Part of the East Africa Coordination Stack
 
