@@ -6,6 +6,13 @@ diaspora taxes, Kenya homeland investment, community verification.
 """
 from __future__ import annotations
 
+import json
+import urllib.error
+import urllib.parse
+import urllib.request
+from datetime import UTC as _UTC
+from datetime import datetime as _dt
+from datetime import timedelta as _td
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 from typing import Annotated, Optional
@@ -191,6 +198,50 @@ def immigration_status_guide(country: Annotated[str | None, Field(description="U
     return {"source": "DEMO — USCIS, UKVI, IRCC", "country": country, "all_statuses": guide,
             "legal_aid": "Find a licensed immigration attorney via your country's bar association.",
             "disclaimer": "Not immigration legal advice. Situations vary. Always consult a licensed attorney."}
+
+
+# ── Live data (free public services) ─────────────────────────────────
+# Live tools change nothing anywhere, but they contact an outside service, and clients should know that.
+LIVE_READ_ONLY = {"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True}
+LIVE_TOOLS = {"live_exchange_rate"}
+_LIVE_UA = {"User-Agent": "diaspora-mcp (https://github.com/gabrielmahia/diaspora-mcp)", "Accept": "application/json"}
+_LIVE_ERRORS = (urllib.error.URLError, TimeoutError, ValueError, KeyError, TypeError, IndexError)
+
+
+def _live_get(url: str, params: dict | None = None, timeout: float = 20.0):
+    if params:
+        url = url + "?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url, headers=_LIVE_UA)
+    with urllib.request.urlopen(req, timeout=timeout) as r:  # fixed https endpoints only
+        return json.loads(r.read().decode("utf-8"))
+
+
+def _live_meta(source: str, attribution: str) -> dict:
+    return {"source": source, "attribution": attribution, "retrieved_at": _dt.now(_UTC).isoformat(timespec="seconds")}
+
+@mcp.tool(name="live_exchange_rate", annotations=LIVE_READ_ONLY, description="Get today's exchange rate from a currency (for example USD, GBP, EUR, CAD or AED) to Kenyan shillings, from a free live rates service, and optionally convert an amount. Use when someone abroad wants to know what their money is worth in Kenya today, or to sanity-check a quoted rate before sending money or paying for property or fees. Returns the rate, the converted amount if given, when the rates were last updated, the source and its required attribution; on a network or service failure it returns an error instead of a rate. Read-only; contacts an external service.")
+def live_exchange_rate(base_currency: Annotated[str, Field(description="Three-letter ISO code of the currency, for example USD, GBP, EUR, CAD or AED.")] = "USD",
+                       amount: Annotated[float | None, Field(description="Optional amount in that currency to convert to KES; must be positive.")] = None) -> dict:
+    meta = _live_meta("LIVE — ExchangeRate-API open access endpoint (open.er-api.com)", "Rates By Exchange Rate API: https://www.exchangerate-api.com")
+    base = (base_currency or "").strip().upper()
+    if not (len(base) == 3 and base.isalpha()):
+        return {"error": "base_currency must be a three-letter ISO code such as USD", **meta}
+    if amount is not None and amount <= 0:
+        return {"error": "amount must be positive", **meta}
+    try:
+        d = _live_get(f"https://open.er-api.com/v6/latest/{base}")
+        if d.get("result") != "success" or "KES" not in d.get("rates", {}):
+            raise ValueError(d.get("error-type", "no KES rate"))
+        rate = float(d["rates"]["KES"])
+    except _LIVE_ERRORS as e:
+        return {"error": f"the rates service did not return a usable KES rate ({type(e).__name__}); no rate is given without it", **meta}
+    out = {"base_currency": base, "kes_per_unit": round(rate, 4), "rates_last_updated": d.get("time_last_update_utc"),
+           "note": "A mid-market reference rate updated about once a day: banks and money transfer services add a margin and fees.", **meta}
+    if amount is not None:
+        out["amount"] = amount
+        out["kes_at_reference_rate"] = round(amount * rate, 2)
+    return out
+
 
 def main() -> None:
     """Console entry point."""

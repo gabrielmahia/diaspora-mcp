@@ -3,7 +3,7 @@
 <!-- coverage-adaptive-reasoning:v2 -->
 
 ## What this is
-Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community. 6 tools.
+Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community. 7 tools.
 
 ## Read first
 - README.md
