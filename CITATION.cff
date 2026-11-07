@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "diaspora-mcp"
+abstract: "Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community. 7 tools."
+version: "0.1.12"
+authors:
+  - family-names: "Mahia"
+    given-names: "Gabriel"
+repository-code: "https://github.com/gabrielmahia/diaspora-mcp"
+license: "MIT"
