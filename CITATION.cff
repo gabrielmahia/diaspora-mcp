@@ -3,7 +3,7 @@ message: "If you use this software, please cite it as below."
 type: software
 title: "diaspora-mcp"
 abstract: "Kenya diaspora services via MCP — immigration, dual citizenship, diaspora taxes, homeland investment, community. 7 tools."
-version: "0.1.12"
+version: "0.1.13"
 authors:
   - family-names: "Mahia"
     given-names: "Gabriel"
